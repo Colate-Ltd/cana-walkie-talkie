@@ -43,7 +43,10 @@ mint() { curl -s -X POST "$API/tokens" -H "authorization: Bearer $ADMIN" -H "con
   -d "{\"name\":\"$1\",\"channels\":[\"$CHID\"],\"capabilities\":[\"receive\",\"send\"],\"ttlHours\":1}" | jget 'o.key'; }
 A=$(mint alice); B=$(mint bob); C=$(mint carol); D=$(mint dave)
 
-# Launch an agent in a PTY (macOS `script`) or util-linux `script`, else plain bg.
+# Launch an agent in a PTY (macOS `script`) or util-linux `script`, else plain
+# bg. PIDs are captured so we can `wait` for just the agents — `wait` with no
+# args would also block on the long-lived server background job.
+AGENT_PIDS=()
 launch() { # name role token lifetime
   local log="$HERE/.agent-$1.log"
   local cmd=(node "$HERE/scenario-agent.mjs" "$WS" "$CHID" "$3" "$1" "$2" "$4")
@@ -51,6 +54,7 @@ launch() { # name role token lifetime
     if [ "$(uname)" = "Darwin" ]; then script -q "$log" "${cmd[@]}" >/dev/null 2>&1 &
     else script -qfec "${cmd[*]}" "$log" >/dev/null 2>&1 & fi
   else "${cmd[@]}" >"$log" 2>&1 & fi
+  AGENT_PIDS+=("$!")
 }
 
 echo "== launching alice(announcer) bob(echo) carol(echo) observer(listener) =="
@@ -69,7 +73,7 @@ BOB_ID=$(curl -s "$API/tokens" -H "authorization: Bearer $ADMIN" | node -e 'let 
 curl -s -X DELETE "$API/tokens/$BOB_ID" -H "authorization: Bearer $ADMIN" >/dev/null
 
 echo "== waiting for agents to self-exit (flushes logs) =="
-wait
+for pid in "${AGENT_PIDS[@]}"; do wait "$pid" 2>/dev/null; done
 L() { cat "$HERE/.agent-$1.log" 2>/dev/null | tr -d '\r'; }
 
 echo ""; echo "############### ASSERTIONS ###############"

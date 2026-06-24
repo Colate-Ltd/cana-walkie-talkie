@@ -64,8 +64,8 @@ echo "== launching real cld agent: pinger (PTY, model=$MODEL) =="
 pty "$HERE/.cld-pinger.log" bash -c "p=\$(cat $HERE/.cld-pinger.txt); WT_BASE=$WT_BASE WT_CHANNEL=$WT_CHANNEL claude --dangerously-skip-permissions --model $MODEL -p \"\$p\""
 PINGER_PID=$!
 
-echo "== waiting for both cld agents to finish =="
-wait $PONGER_PID 2>/dev/null; wait $PINGER_PID 2>/dev/null
+echo "== waiting for both cld agents to finish (server is bg, must not be wait'd) =="
+wait "$PONGER_PID" 2>/dev/null; wait "$PINGER_PID" 2>/dev/null
 
 echo ""; echo "### ponger said ###"; cat "$HERE/.cld-ponger.log" 2>/dev/null | tr -d '\r'
 echo ""; echo "### pinger said ###"; cat "$HERE/.cld-pinger.log" 2>/dev/null | tr -d '\r'
