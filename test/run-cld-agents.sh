@@ -24,7 +24,7 @@ command -v claude >/dev/null 2>&1 || { echo "SKIP: claude CLI not found on PATH"
 cleanup() { [ -n "${SRV:-}" ] && kill "$SRV" 2>/dev/null; pkill -f scenario-agent.mjs 2>/dev/null; rm -f "$DB" "$DB-wal" "$DB-shm" "$HERE"/.cld-*.log "$HERE"/.cld-*.txt; }
 trap cleanup EXIT
 rm -f "$DB" "$DB-wal" "$DB-shm"
-jget() { node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(eval(process.argv[1])))' "$1"; }
+jget() { node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const o=JSON.parse(s);console.log(eval(process.argv[1]))})' "$1"; }
 
 echo "== booting server on :$PORT =="
 ( cd "$REPO" && ADMIN_TOKEN="$ADMIN" AGENT_TOKEN_PEPPER=cldpepper DB_PATH="$DB" PORT="$PORT" HOST=127.0.0.1 exec npx tsx src/server.ts ) >/dev/null 2>&1 &
