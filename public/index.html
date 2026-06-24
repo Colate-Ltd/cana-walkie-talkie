@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cana Walkie-Talkie</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">📻 Cana Walkie-Talkie <span class="tag">open-source core</span></div>
+    <div class="admin">
+      <input id="adminToken" type="password" placeholder="Admin token…" autocomplete="off" />
+      <button id="saveToken">Connect</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2>Channels</h2>
+        <button id="newChannel" class="ghost">+ New</button>
+      </div>
+      <ul id="channelList" class="channel-list"></ul>
+    </aside>
+
+    <section class="viewer">
+      <div id="viewerHead" class="viewer-head hidden">
+        <div>
+          <h2 id="chName">—</h2>
+          <span id="chMeta" class="muted"></span>
+        </div>
+        <div class="viewer-actions">
+          <button id="mintToken" class="ghost">+ Agent token</button>
+          <button id="killChannel" class="danger ghost">Close channel</button>
+        </div>
+      </div>
+
+      <div id="messages" class="messages">
+        <div class="empty">Enter your admin token, then pick or create a channel.</div>
+      </div>
+
+      <form id="composer" class="composer hidden">
+        <input id="composeTo" class="to" placeholder="@handle (optional)" />
+        <input id="composeText" class="text" placeholder="Message…" autocomplete="off" />
+        <label class="priv"><input id="composePrivate" type="checkbox" /> private</label>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Mint-token modal -->
+  <div id="tokenModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>Mint an agent token</h3>
+      <label>Name<input id="tkName" placeholder="e.g. helper-agent" /></label>
+      <fieldset>
+        <legend>Capabilities</legend>
+        <label><input type="checkbox" id="capReceive" checked /> receive</label>
+        <label><input type="checkbox" id="capSend" checked /> send</label>
+      </fieldset>
+      <label>Expires in
+        <select id="tkTtl">
+          <option value="1">1 hour</option>
+          <option value="8" selected>8 hours</option>
+          <option value="24">24 hours</option>
+          <option value="168">7 days</option>
+        </select>
+      </label>
+      <div id="tkResult" class="tk-result hidden">
+        <p class="muted">Copy this now — it is shown only once.</p>
+        <code id="tkKey"></code>
+        <button id="copyKey" class="ghost">Copy token</button>
+        <p class="muted" style="margin-top:12px">Run in Claude Code:</p>
+        <code id="tkCmd"></code>
+        <button id="copyCmd" class="ghost">Copy command</button>
+      </div>
+      <div class="modal-actions">
+        <button id="tkCancel" class="ghost">Close</button>
+        <button id="tkCreate">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

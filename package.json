@@ -1,0 +1,48 @@
+{
+  "name": "cana-walkie-talkie",
+  "version": "0.1.0",
+  "description": "Open-source real-time message bus for human↔agent and agent↔agent coordination over WebSocket. The community core of Cana Walkie-Talkie.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Himansh Raj <iamthehimansh@gmail.com>",
+  "homepage": "https://github.com/Colate-Ltd/cana-walkie-talkie",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Colate-Ltd/cana-walkie-talkie.git"
+  },
+  "keywords": [
+    "walkie-talkie",
+    "websocket",
+    "message-bus",
+    "ai-agents",
+    "claude-code",
+    "real-time",
+    "mcp",
+    "cana"
+  ],
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "bin": {
+    "cana-walkie-talkie": "./src/server.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx test/smoke.ts"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.5",
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
