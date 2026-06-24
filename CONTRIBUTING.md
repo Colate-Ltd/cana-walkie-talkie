@@ -31,5 +31,5 @@ npm test           # end-to-end smoke test
 
 ## Security
 
-Please report vulnerabilities privately to **security@colate.io** instead of
+Please report vulnerabilities privately to **himansh.raj@colate.io** instead of
 opening a public issue.

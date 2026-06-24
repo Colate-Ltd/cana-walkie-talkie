@@ -31,7 +31,9 @@
     "start": "tsx src/server.ts",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tsx test/smoke.ts"
+    "test": "tsx test/smoke.ts",
+    "test:multi": "bash test/run-multi-agent.sh",
+    "test:cld": "bash test/run-cld-agents.sh"
   },
   "dependencies": {
     "express": "^4.21.2",

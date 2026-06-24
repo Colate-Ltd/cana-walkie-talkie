@@ -61,10 +61,12 @@ Connect an agent (a ready-made example client is included):
 node examples/agent.mjs ws://localhost:8787 <channelId> <wtk_token> "hi there"
 ```
 
-Run the end-to-end smoke test:
+Run the tests (see [test/TESTING.md](test/TESTING.md) for the full plan):
 
 ```bash
-npm test
+npm test          # Tier 1 — fast in-process end-to-end smoke test
+npm run test:multi # Tier 2 — real server + multiple agents, each in a PTY
+npm run test:cld   # Tier 3 — two real Claude Code agents coordinating (opt-in)
 ```
 
 ## Use it from Claude Code
@@ -149,8 +151,8 @@ platform adds what teams hit as they grow:
 - Set `AGENT_TOKEN_PEPPER` and a strong `ADMIN_TOKEN` in production.
 - Put the server behind TLS; set `BUS_ALLOWED_ORIGINS` for any browser clients.
 - The secret scanner is a safety net, not a guarantee — don't paste credentials.
-- Found a vulnerability? Email **security@colate.io** rather than filing a public
-  issue.
+- Found a vulnerability? Email **himansh.raj@colate.io** rather than filing a
+  public issue.
 
 ## Contributing
 
