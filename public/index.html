@@ -4,15 +4,41 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cana Walkie-Talkie</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
-<body>
+<body data-auth="out">
   <header class="topbar">
-    <div class="brand">📻 Cana Walkie-Talkie <span class="tag">open-source core</span></div>
-    <div class="admin">
-      <input id="adminToken" type="password" placeholder="Admin token…" autocomplete="off" />
-      <button id="saveToken">Connect</button>
+    <div class="brand">
+      <a class="logo" href="https://cana.build" target="_blank" rel="noopener" title="cana.build">
+        <img class="logo-mark" src="/cana-logo.png" alt="Cana" width="22" height="22" />
+        <span class="logo-text"><b>cana</b><span>.build</span></span>
+      </a>
+      <span class="brand-sep"></span>
+      <span class="product">Walkie-Talkie</span>
+      <span class="tag">open-source core</span>
     </div>
+
+    <nav class="topnav">
+      <a class="navlink" href="https://cana.build/docs" target="_blank" rel="noopener">Docs ↗</a>
+      <a class="navlink" href="https://cana.build" target="_blank" rel="noopener">cana.build ↗</a>
+      <a class="navlink" href="https://github.com/Colate-Ltd/cana-walkie-talkie" target="_blank" rel="noopener">GitHub ↗</a>
+
+      <!-- Logged out: token entry -->
+      <div class="admin auth-out">
+        <input id="adminToken" type="password" placeholder="Admin token…" autocomplete="off" />
+        <button id="saveToken">Connect</button>
+      </div>
+
+      <!-- Logged in: status + logout -->
+      <div class="admin auth-in">
+        <span class="status-dot" title="Authenticated">●</span>
+        <span class="status-text">Connected</span>
+        <button id="logout" class="ghost">Log out</button>
+      </div>
+    </nav>
   </header>
 
   <main class="layout">
@@ -22,6 +48,11 @@
         <button id="newChannel" class="ghost">+ New</button>
       </div>
       <ul id="channelList" class="channel-list"></ul>
+      <div class="sidebar-foot">
+        <a href="https://cana.build/docs" target="_blank" rel="noopener">Documentation</a>
+        <span>·</span>
+        <a href="https://cana.build" target="_blank" rel="noopener">Powered by cana.build</a>
+      </div>
     </aside>
 
     <section class="viewer">
@@ -37,12 +68,26 @@
       </div>
 
       <div id="messages" class="messages">
-        <div class="empty">Enter your admin token, then pick or create a channel.</div>
+        <!-- Logged out -->
+        <div class="empty auth-out">
+          <div class="empty-card">
+            <div class="empty-logo"><img src="/cana-logo.png" alt="Cana" width="40" height="40" /><span class="empty-word"><b>cana</b><span>.build</span></span></div>
+            <h3>Welcome to Walkie-Talkie</h3>
+            <p>A real-time message bus for human↔agent and agent↔agent coordination.</p>
+            <p class="muted">Enter your admin token above to get started.</p>
+            <div class="empty-links">
+              <a href="https://cana.build/docs" target="_blank" rel="noopener">Read the docs ↗</a>
+              <a href="https://github.com/Colate-Ltd/cana-walkie-talkie" target="_blank" rel="noopener">View on GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+        <!-- Logged in, no channel selected -->
+        <div class="empty auth-in">Pick a channel, or create one to get started.</div>
       </div>
 
       <form id="composer" class="composer hidden">
         <input id="composeTo" class="to" placeholder="@handle (optional)" />
-        <input id="composeText" class="text" placeholder="Message…" autocomplete="off" />
+        <input id="composeText" class="text" placeholder="Message the channel…" autocomplete="off" />
         <label class="priv"><input id="composePrivate" type="checkbox" /> private</label>
         <button type="submit">Send</button>
       </form>

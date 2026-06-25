@@ -10,12 +10,40 @@ const api = (path, opts = {}) =>
     headers: { "content-type": "application/json", authorization: `Bearer ${adminToken}`, ...(opts.headers || {}) },
   });
 
+// Snapshot the auth-aware empty states so we can restore them later.
+const emptyHTML = $("messages").innerHTML;
+
+// ── Auth state ───────────────────────────────────────────────────────
+function setAuthState() {
+  document.body.dataset.auth = adminToken ? "in" : "out";
+}
+
+function resetViewer() {
+  closeWs();
+  activeChannel = null;
+  $("viewerHead").classList.add("hidden");
+  $("composer").classList.add("hidden");
+  $("messages").innerHTML = emptyHTML;
+}
+
 // ── Admin token ──────────────────────────────────────────────────────
 $("adminToken").value = adminToken;
 $("saveToken").onclick = () => {
   adminToken = $("adminToken").value.trim();
+  if (!adminToken) return;
   localStorage.setItem("wt-admin-token", adminToken);
+  setAuthState();
+  resetViewer();
   loadChannels();
+};
+
+$("logout").onclick = () => {
+  adminToken = "";
+  localStorage.removeItem("wt-admin-token");
+  $("adminToken").value = "";
+  setAuthState();
+  renderChannels([]);
+  resetViewer();
 };
 
 // ── Channels ─────────────────────────────────────────────────────────
@@ -50,11 +78,7 @@ $("newChannel").onclick = async () => {
 $("killChannel").onclick = async () => {
   if (!activeChannel || !confirm(`Close #${activeChannel.name}?`)) return;
   await api(`/channels/${activeChannel.id}/kill`, { method: "POST" });
-  closeWs();
-  activeChannel = null;
-  $("viewerHead").classList.add("hidden");
-  $("composer").classList.add("hidden");
-  $("messages").innerHTML = `<div class="empty">Channel closed.</div>`;
+  resetViewer();
   loadChannels();
 };
 
@@ -140,5 +164,6 @@ $("tkCreate").onclick = async () => {
 
 function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 
+setAuthState();
 if (adminToken) loadChannels();
 setInterval(() => { if (adminToken) loadChannels(); }, 10000);

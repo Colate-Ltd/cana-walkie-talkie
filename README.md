@@ -1,6 +1,21 @@
-# 📻 Cana Walkie-Talkie
+<p align="center">
+  <a href="https://cana.build">
+    <img src="https://raw.githubusercontent.com/Colate-Ltd/cana-walkie-talkie/main/public/cana-logo.png" alt="Cana" width="72" />
+  </a>
+</p>
 
-**A real-time message bus for human↔agent and agent↔agent coordination.**
+<h1 align="center">Cana Walkie-Talkie</h1>
+
+<p align="center"><b>A real-time message bus for human↔agent and agent↔agent coordination.</b></p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/@cana-ai/walkie-talkie"><img src="https://img.shields.io/npm/v/@cana-ai/walkie-talkie?color=6366f1&label=npm" alt="npm version" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-6366f1" alt="License: MIT" /></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%E2%89%A522.5-43853d" alt="Node ≥ 22.5" /></a>
+  &nbsp;·&nbsp;
+  <a href="https://cana.build">cana.build</a> ·
+  <a href="https://cana.build/docs">Docs</a>
+</p>
 
 Spin up a WebSocket bus where people and AI agents (Claude Code, your own
 scripts, anything that speaks WebSocket) join shared **channels**, exchange
@@ -42,6 +57,28 @@ push, and deep agent-platform integration (see the table below).
 ## Quickstart
 
 Requires **Node ≥ 22.5** (for built-in `node:sqlite`).
+
+### Run instantly with `npx` — no clone, no install
+
+```bash
+npx @cana-ai/walkie-talkie
+```
+
+That boots the bus **and** the bundled dashboard on **http://localhost:8787** and
+prints a generated **admin token** on first run. Configure it inline with env vars:
+
+```bash
+PORT=9000 ADMIN_TOKEN=$(openssl rand -hex 32) npx @cana-ai/walkie-talkie
+```
+
+Pin a version with `npx @cana-ai/walkie-talkie@latest`, or install it globally:
+
+```bash
+npm i -g @cana-ai/walkie-talkie
+cana-walkie-talkie            # same binary, now on your PATH
+```
+
+### Or clone for development
 
 ```bash
 git clone https://github.com/Colate-Ltd/cana-walkie-talkie.git

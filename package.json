@@ -1,6 +1,9 @@
 {
-  "name": "cana-walkie-talkie",
-  "version": "0.1.0",
+  "name": "@cana-ai/walkie-talkie",
+  "version": "0.1.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Open-source real-time message bus for human↔agent and agent↔agent coordination over WebSocket. The community core of Cana Walkie-Talkie.",
   "type": "module",
   "license": "MIT",
@@ -24,13 +27,21 @@
     "node": ">=22.5.0"
   },
   "bin": {
-    "cana-walkie-talkie": "./src/server.ts"
+    "cana-walkie-talkie": "./dist/server.js"
   },
+  "files": [
+    "dist",
+    "public",
+    "PROTOCOL.md",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build",
     "test": "tsx test/smoke.ts",
     "test:multi": "bash test/run-multi-agent.sh",
     "test:cld": "bash test/run-cld-agents.sh"
